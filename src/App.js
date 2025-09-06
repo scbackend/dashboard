@@ -1,23 +1,31 @@
-import logo from './logo.svg';
 import './App.css';
+import logo from './logo.png';
+import globalState from './globalState';
+import {HashRouter, Route, Routes, Link} from 'react-router-dom';
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className="Dashboard">
+      <HashRouter>
+      <nav className="Sidebar">
+        <div className="SidebarBrand">
+          <img src={logo} alt="Logo" className="SidebarLogo" />
+          <span className="SidebarTitle">Scbackend</span>
+        </div>
+        <ul className="NavList">
+          <li className="NavItem"><Link className='NavLink' to='/'>{globalState.formatMessage('home.title')}</Link></li>
+          <li className="NavItem"><Link className='NavLink' to='/insts'>{globalState.formatMessage('insts.title')}</Link></li>
+          <li className="NavItem"><Link className='NavLink' to='/settings'>{globalState.formatMessage('settings.title')}</Link></li>
+        </ul>
+      </nav>
+      <main className="Content">
+          <Routes>
+            <Route path="/" element={<h2>{globalState.formatMessage('home.title')}</h2>} />
+            <Route path="/insts" element={<h2>{globalState.formatMessage('insts.title')}</h2>} />
+            <Route path="/settings" element={<h2>{globalState.formatMessage('settings.title')}</h2>} />
+          </Routes>
+      </main>
+      </HashRouter>
     </div>
   );
 }
