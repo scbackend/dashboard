@@ -1,0 +1,113 @@
+/* 卡片容器布局 */
+.Insts-card-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 24px;
+    padding: 24px;
+    justify-content: flex-start;
+}
+
+/* 单个卡片样式 */
+.Insts-card {
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    width: 320px;
+    min-height: 180px;
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
+    transition: box-shadow 0.2s;
+    position: relative;
+}
+
+.Insts-card:hover {
+    box-shadow: 0 4px 16px rgba(0,0,0,0.16);
+}
+
+/* 卡片标题 */
+.Insts-card-title {
+    font-size: 1.25rem;
+    font-weight: 600;
+    margin-bottom: 12px;
+    color: #333;
+}
+
+/* 卡片内容 */
+.Insts-card-content {
+    flex: 1;
+    font-size: 1rem;
+    color: #666;
+    margin-bottom: 16px;
+}
+
+/* 操作按钮区域 */
+.Insts-card-actions {
+    display: flex;
+    gap: 12px;
+    justify-content: flex-end;
+}
+
+.Insts-card-btn {
+    background: #1677ff;
+    color: #fff;
+    border: none;
+    border-radius: 6px;
+    padding: 6px 16px;
+    font-size: 0.95rem;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.Insts-card-btn:hover {
+    background: #0958d9;
+}
+
+/* 卡片状态样式 */
+.Insts-card-status {
+    position: absolute;
+    left: 20px;
+    bottom: 16px;
+    font-size: 0.98rem;
+    font-weight: 500;
+    color: #fff;
+    padding: 2px 10px;
+    border-radius: 8px;
+    background: #52c41a; /* 默认运行中绿色 */
+    box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+    z-index: 1;
+}
+.Insts-card-status.stopped {
+    background: #ff4d4f;
+}
+
+/* 启动/停止按钮样式 */
+.Insts-card-switch-btn {
+    margin-left: 12px;
+    background: #faad14;
+    color: #fff;
+    border: none;
+    border-radius: 6px;
+    padding: 4px 14px;
+    font-size: 0.95rem;
+    cursor: pointer;
+    transition: background 0.2s;
+    vertical-align: middle;
+}
+.Insts-card-switch-btn:hover {
+    background: #d48806;
+}
+
+/* 响应式适配 */
+@media (max-width: 600px) {
+    .Insts-card-list {
+        flex-direction: column;
+        gap: 16px;
+        padding: 12px;
+    }
+    .Insts-card {
+        width: 100%;
+        min-width: 0;
+        padding: 12px;
+    }
+}

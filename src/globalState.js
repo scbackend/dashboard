@@ -1,21 +1,11 @@
+import i18nmapping from "./i18nmapping.js";
+
 const globalState = {
-    user: null,
-    ui: {
-        page: 'home',
-    },
+    token: null,
+    host: 'http://localhost:3030',
+    insts: null,
     formatMessage: (msg) => {
-        const messages = {
-            'zh-CN': {
-                'home.title': '首页',
-                'insts.title': '实例管理',
-                'settings.title': '设置',
-            },
-            'en-US': {
-                'home.title': 'Home',
-                'insts.title': 'Instances Management',
-                'settings.title': 'Settings',
-            }
-        }
+        const messages = i18nmapping;
         const normalizedLang = () => {
             const lang = navigator.language || 'en-US';
             if (lang.startsWith('zh')) return 'zh-CN';
