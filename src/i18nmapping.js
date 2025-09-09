@@ -6,6 +6,10 @@ const i18nmapping = {
         'insts.delete': '删除',
         'insts.start': '启动',
         'insts.stop': '停止',
+        'insts.loading': '加载中...',
+        'insts.create': '+ 创建实例',
+        'insts.running': '运行中',
+        'insts.stopped': '停止中',
         'settings.title': '设置',
     },
     'en-US': {
@@ -15,6 +19,10 @@ const i18nmapping = {
         'insts.delete': 'Delete',
         'insts.start': 'Start',
         'insts.stop': 'Stop',
+        'insts.loading': 'Loading...',
+        'insts.create': 'Create Instance',
+        'insts.running': 'Running',
+        'insts.stopped': 'Stopped',
         'settings.title': 'Settings',
     }
 };
