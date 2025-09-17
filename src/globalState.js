@@ -2,8 +2,9 @@ import i18nmapping from "./i18nmapping.js";
 
 const globalState = {
     token: null,
-    host: 'http://localhost:3030',
+    host: null,
     insts: null,
+    dialog: null,
     formatMessage: (msg) => {
         const messages = i18nmapping;
         const normalizedLang = () => {

@@ -10,6 +10,8 @@ const i18nmapping = {
         'insts.create': '+ 创建实例',
         'insts.running': '运行中',
         'insts.stopped': '停止中',
+        'dialog.cancel': '取消',
+        'dialog.confirm': '确认',
         'settings.title': '设置',
     },
     'en-US': {
@@ -23,6 +25,8 @@ const i18nmapping = {
         'insts.create': 'Create Instance',
         'insts.running': 'Running',
         'insts.stopped': 'Stopped',
+        'dialog.cancel': 'Cancel',
+        'dialog.confirm': 'Confirm',
         'settings.title': 'Settings',
     }
 };
