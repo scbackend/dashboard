@@ -1,4 +1,5 @@
 import React from 'react';
+import axiosInstance from '../../axiosInstance';
 import globalState from '../../globalState';
 import './Insts.css';
 import Dialog from '../dialog/dialog.jsx';
@@ -15,45 +16,19 @@ class Insts extends React.Component {
 
     refresh = (skip) => {
         if (skip || !globalState.insts) {
-            fetch(`${globalState.host}/projects`, {
-                method: 'GET',
-                headers: {
-                    'Authorization': `Bearer ${globalState.token}`,
-                    'Cache-Control': 'no-cache'
-                }
-            })
+            axiosInstance.get(`${globalState.host}/projects`)
             .then(response => {
-                if (response.status === 403) {
-                    globalState.token = null;
-                    window.localStorage.removeItem('token');
-                    window.location.reload();
-                }
-                if (!response.ok) throw new Error('网络错误');
-                return response.json();
-            })
-            .then(data => {
+                const data = response.data;
                 globalState.insts = data;
-                let ists = [];
-                ists = data.map(item => {
-                    return { name: item.name, desc: item.body, status: 0 }
-                });
-                fetch(`${globalState.host}/runners`, {
-                    method: 'GET',
+                let ists = data.map(item => ({ name: item.name, desc: item.body, status: 0 }));
+                axiosInstance.get(`${globalState.host}/runners`, {
                     headers: {
                         'Authorization': `Bearer ${globalState.token}`,
                         'Cache-Control': 'no-cache'
-                    },
+                    }
                 })
                 .then(response => {
-                    if (response.status === 403) {
-                        globalState.token = null;
-                        window.localStorage.removeItem('token');
-                        window.location.reload();
-                    }
-                    if (!response.ok) throw new Error('网络错误');
-                    return response.json();
-                })
-                .then(runners => {
+                    const runners = response.data;
                     ists.forEach(inst => {
                         inst.status = runners.includes(inst.name) ? 1 : 0;
                     });
@@ -61,10 +36,15 @@ class Insts extends React.Component {
                 })
                 .catch(error => {
                     console.error('获取运行状态失败:', error);
-                    this.setState({ insts: ists }); // 即使失败也显示项目列表
+                    this.setState({ insts: ists });
                 });
             })
             .catch(error => {
+                if (error.response && error.response.status === 403) {
+                    globalState.token = null;
+                    window.localStorage.removeItem('token');
+                    window.location.reload();
+                }
                 console.error('获取实例失败:', error);
             });
         } else {
@@ -82,20 +62,14 @@ class Insts extends React.Component {
         const name = prompt('请输入实例名称:');
         const body = prompt('请输入实例内容:');
         if (name && body) {
-            fetch(`${globalState.host}/create`, {
-                method: 'POST',
+            axiosInstance.post(`${globalState.host}/create`, { name, body }, {
                 headers: {
                     'Content-Type': 'application/json',
                     'Authorization': `Bearer ${globalState.token}`,
                     'Cache-Control': 'no-cache'
-                },
-                body: JSON.stringify({ name: name, body: body }),
+                }
             })
             .then(response => {
-                if (!response.ok) throw new Error('网络错误');
-                return response.json();
-            })
-            .then(data => {
                 this.refresh(true);
             })
             .catch(error => {
@@ -106,8 +80,7 @@ class Insts extends React.Component {
 
     handleDelete = (name) => {
         if (window.confirm(`确定要删除实例 "${name}" 吗？`)) {
-            fetch(`${globalState.host}/project/delete/${name}`, {
-                method: 'GET',
+            axiosInstance.get(`${globalState.host}/project/delete/${name}`, {
                 headers: {
                     'Content-Type': 'application/json',
                     'Authorization': `Bearer ${globalState.token}`,
@@ -115,10 +88,6 @@ class Insts extends React.Component {
                 }
             })
             .then(response => {
-                if (!response.ok) throw new Error('网络错误');
-                return response.json();
-            })
-            .then(data => {
                 this.refresh(true);
             })
             .catch(error => {
@@ -131,18 +100,13 @@ class Insts extends React.Component {
         const inst = this.state.insts.find(i => i.name === name);
         if (!inst) return;
         const action = inst.status === 1 ? 'remove' : 'add';
-        fetch(`${globalState.host}/runner/${action}/${name}`, {
-            method: 'GET',
+    axiosInstance.get(`${globalState.host}/runner/${action}/${name}`, {
             headers: {
                 'Authorization': `Bearer ${globalState.token}`,
                 'Cache-Control': 'no-cache'
             }
         })
         .then(response => {
-            if (!response.ok) throw new Error('网络错误');
-            return response.json();
-        })
-        .then(data => {
             this.refresh(true);
         })
         .catch(error => {
@@ -162,18 +126,12 @@ class Insts extends React.Component {
                     const fileInput = document.getElementById('sb3-input');
                     const file = fileInput.files[0];
                     // 先更新描述
-                    await fetch(`${globalState.host}/project/update/${inst.name}`, {
-                        method: 'POST',
+                    await axiosInstance.post(`${globalState.host}/project/update/${inst.name}`, { name: inst.name, body: desc }, {
                         headers: {
                             'Content-Type': 'application/json',
                             'Authorization': `Bearer ${globalState.token}`,
                             'Cache-Control': 'no-cache'
-                        },
-                        body: JSON.stringify({ name: inst.name, body: desc })
-                    })
-                    .then(response => {
-                        if (!response.ok) throw new Error('网络错误');
-                        return response.json();
+                        }
                     })
                     .catch(error => {
                         alert('描述更新失败');
@@ -181,18 +139,12 @@ class Insts extends React.Component {
                     // 再上传文件
                     if (file) {
                         const arrayBuffer = await file.arrayBuffer();
-                        await fetch(`${globalState.host}/project/${inst.name}`, {
-                            method: 'POST',
+                        await axiosInstance.post(`${globalState.host}/project/${inst.name}`, arrayBuffer, {
                             headers: {
                                 'Authorization': `Bearer ${globalState.token}`,
                                 'Cache-Control': 'no-cache',
                                 'Content-Type': 'application/octet-stream'
-                            },
-                            body: arrayBuffer
-                        })
-                        .then(response => {
-                            if (!response.ok) throw new Error('文件上传失败');
-                            return response.json();
+                            }
                         })
                         .catch(error => {
                             alert('文件上传失败');

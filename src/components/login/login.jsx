@@ -1,4 +1,5 @@
 import React from 'react';
+import axiosInstance from '../../axiosInstance';
 import globalState from '../../globalState';
 import './login.css';
 
@@ -25,25 +26,26 @@ class Login extends React.Component {
     };
 
     handleLogin = () => {
-        fetch(`${globalState.host}/login`, {
-            method: 'POST',
+        axiosInstance.post(`${globalState.host}/login`, {
+            username: this.state.username,
+            password: this.state.password
+        }, {
             headers: {
                 'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
-                username: this.state.username,
-                password: this.state.password
-            })
-        }).then(response => response.json()).then(data => {
+            }
+        })
+        .then(response => {
+            const data = response.data;
             if(data.token){
-                globalState.token = data.token
-                window.localStorage.setItem('token', data.token)
+                globalState.token = data.token;
+                window.localStorage.setItem('token', data.token);
                 this.setState({ visible: false });
                 window.location.reload();
             } else {
                 alert('登录失败，请检查用户名和密码');
             }
-        }).catch(error => {
+        })
+        .catch(error => {
             console.error('Error during login:', error);
             alert('登录请求失败，请稍后重试');
         });

@@ -5,6 +5,8 @@ import globalState from './globalState';
 import {HashRouter, Route, Routes, Link} from 'react-router-dom';
 import Insts from './components/insts/Insts.jsx';
 import Login from './components/login/login.jsx';
+import Home from './components/home/home.jsx';
+import Settings from './components/settings/settings.jsx';
 
 class App extends React.Component {
   constructor(props) {
@@ -13,11 +15,7 @@ class App extends React.Component {
     globalState.onChange = () => {
       this.setState({ dialog: globalState.dialog });
     }
-    if(!globalState.host){
-      const host = window.localStorage.getItem('host') || window.prompt('请输入后端地址', 'http://localhost:3030');
-      window.localStorage.setItem('host', host);
-      globalState.host = host;
-    }
+    globalState.host = window.localStorage.getItem('host') || '';
   }
 
   render() {
@@ -39,9 +37,9 @@ class App extends React.Component {
         </nav>
         <main className="Content">
             <Routes>
-              <Route path="/" element={<h2>{globalState.formatMessage('home.title')}</h2>} />
+              <Route path="/" element={<Home />} />
               <Route path="/insts" element={<Insts />} />
-              <Route path="/settings" element={<h2>{globalState.formatMessage('settings.title')}</h2>} />
+              <Route path="/settings" element={<Settings/>} />
             </Routes>
         </main>
         </HashRouter>
