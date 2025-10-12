@@ -7,6 +7,7 @@ import Insts from './components/insts/Insts.jsx';
 import Login from './components/login/login.jsx';
 import Home from './components/home/home.jsx';
 import Settings from './components/settings/settings.jsx';
+import Plugins from './components/plugins/plugins.jsx';
 
 class App extends React.Component {
   constructor(props) {
@@ -32,6 +33,7 @@ class App extends React.Component {
           <ul className="NavList">
             <li className="NavItem"><Link className='NavLink' to='/'>{globalState.formatMessage('home.title')}</Link></li>
             <li className="NavItem"><Link className='NavLink' to='/insts'>{globalState.formatMessage('insts.title')}</Link></li>
+            <li className="NavItem"><Link className='NavLink' to='/plugins'>{globalState.formatMessage('plugins.title')}</Link></li>
             <li className="NavItem"><Link className='NavLink' to='/settings'>{globalState.formatMessage('settings.title')}</Link></li>
           </ul>
         </nav>
@@ -39,6 +41,7 @@ class App extends React.Component {
             <Routes>
               <Route path="/" element={<Home />} />
               <Route path="/insts" element={<Insts />} />
+              <Route path="/plugins" element={<Plugins />} />
               <Route path="/settings" element={<Settings/>} />
             </Routes>
         </main>
