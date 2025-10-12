@@ -14,11 +14,6 @@ class Login extends React.Component {
         if(!this.state.visible){
             globalState.token = window.localStorage.getItem('token');
         }
-        else if(window.location.hash.length > 1)
-        {
-            window.location.hash='';
-            window.location.reload();
-        }
     }
 
     handleChange = (e) => {

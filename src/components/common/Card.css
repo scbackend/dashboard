@@ -1,0 +1,78 @@
+/* 通用卡片容器布局 */
+.CardList {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 24px;
+    padding: 24px;
+    justify-content: flex-start;
+}
+
+/* 通用单个卡片样式 */
+.Card {
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    width: 320px;
+    min-height: 180px;
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
+    transition: box-shadow 0.2s;
+    position: relative;
+}
+
+.Card:hover {
+    box-shadow: 0 4px 16px rgba(0,0,0,0.16);
+}
+
+/* 卡片标题 */
+.CardTitle {
+    font-size: 1.25rem;
+    font-weight: 600;
+    margin-bottom: 12px;
+    color: #333;
+}
+
+/* 卡片内容 */
+.CardContent {
+    flex: 1;
+    font-size: 1rem;
+    color: #666;
+    margin-bottom: 16px;
+}
+
+/* 操作按钮区域 */
+.CardActions {
+    display: flex;
+    gap: 12px;
+    justify-content: flex-end;
+}
+
+.CardBtn {
+    background: #1677ff;
+    color: #fff;
+    border: none;
+    border-radius: 6px;
+    padding: 6px 16px;
+    font-size: 0.95rem;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.CardBtn:hover {
+    background: #0958d9;
+}
+
+/* 响应式适配 */
+@media (max-width: 600px) {
+    .CardList {
+        flex-direction: column;
+        gap: 16px;
+        padding: 12px;
+    }
+    .Card {
+        width: 100%;
+        min-width: 0;
+        padding: 12px;
+    }
+}

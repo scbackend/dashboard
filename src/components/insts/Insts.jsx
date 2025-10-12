@@ -1,7 +1,7 @@
 import React from 'react';
 import axiosInstance from '../../axiosInstance';
 import globalState from '../../globalState';
-import './Insts.css';
+import '../common/Card.css';
 import Dialog from '../dialog/dialog.jsx';
 
 class Insts extends React.Component {
@@ -40,11 +40,6 @@ class Insts extends React.Component {
                 });
             })
             .catch(error => {
-                if (error.response && error.response.status === 403) {
-                    globalState.token = null;
-                    window.localStorage.removeItem('token');
-                    window.location.reload();
-                }
                 console.error('获取实例失败:', error);
             });
         } else {
@@ -173,33 +168,33 @@ class Insts extends React.Component {
     render() {
         const insts = this.state.insts;
         return (this.state.insts ? (
-            <div className="Insts">
+            <div className="Instances">
                 <div style={{display: 'flex', alignItems: 'center', justifyContent: 'space-between'}}>
                     <h2>{globalState.formatMessage('insts.title')}</h2>
-                    <button className="Insts-card-btn" onClick={this.handleCreate}>
+                    <button className="CardBtn" onClick={this.handleCreate}>
                         {globalState.formatMessage('insts.create')}
                     </button>
                 </div>
-                <div className="Insts-card-list">
+                <div className="CardList">
                     {insts.map(inst => (
-                        <div className="Insts-card" key={inst.id}>
-                            <div className="Insts-card-title">
+                        <div className="Card" key={inst.id}>
+                            <div className="CardTitle">
                                 {inst.name}
-                                <button className="Insts-card-switch-btn" onClick={_ => this.handleStatusChange(inst.name)}>
+                                <button className="CardBtn" style={{marginLeft: '12px', background: '#faad14'}} onClick={_ => this.handleStatusChange(inst.name)}>
                                     {inst.status === 1
                                         ? globalState.formatMessage('insts.stop')
                                         : globalState.formatMessage('insts.start')}
                                 </button>
                             </div>
-                            <div className="Insts-card-content">{inst.desc}</div>
-                            <div className={`Insts-card-status${inst.status === 0 ? ' stopped' : ''}`}>
+                            <div className="CardContent">{inst.desc}</div>
+                            <div style={{position: 'absolute', left: 20, bottom: 16, fontSize: '0.98rem', fontWeight: 500, color: '#fff', padding: '2px 10px', borderRadius: 8, background: inst.status ? '#52c41a' : '#ff4d4f', boxShadow: '0 1px 4px rgba(0,0,0,0.06)', zIndex: 1}}>
                                 {inst.status ? globalState.formatMessage('insts.running') : globalState.formatMessage('insts.stopped')}
                             </div>
-                            <div className="Insts-card-actions">
-                                <button className="Insts-card-btn" onClick={() => this.handleEdit(inst.name)}>
+                            <div className="CardActions">
+                                <button className="CardBtn" onClick={() => this.handleEdit(inst.name)}>
                                     {globalState.formatMessage('insts.edit')}
                                 </button>
-                                <button className="Insts-card-btn" onClick={() => this.handleDelete(inst.name)}>
+                                <button className="CardBtn" onClick={() => this.handleDelete(inst.name)}>
                                     {globalState.formatMessage('insts.delete')}
                                 </button>
                             </div>
